@@ -6,7 +6,6 @@ from dotenv import load_dotenv, find_dotenv
 from aiogram import Bot, Dispatcher
 
 from bot.routes.start import start_router
-from bot.database.orm import User, DatabaseManager
 
 
 async def main() -> None:
@@ -16,11 +15,6 @@ async def main() -> None:
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(name)s - %(message)s',
     )
-    logging.info('Initializing database...')
-    DATABASE = DatabaseManager()
-    logging.info('Creating tables...')
-    DATABASE.create_tables()
-    logging.info('Tables created.')
 
     logging.info('Starting bot.')
     bot = Bot(token=os.getenv('TELEGRAM_BOT_TOKEN'))
