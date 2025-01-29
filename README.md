@@ -5,4 +5,4 @@
 ### Telegram bots
 
 [Хатико-техника](https://github.com/The-One-Reborn-developer/headhunter/tree/master/imei-check)
-aiogram, SQLAlchemy, SQLite, python-dotenv
+aiogram, SQLAlchemy, SQLite, python-dotenv, Flask

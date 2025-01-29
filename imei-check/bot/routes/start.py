@@ -7,13 +7,16 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
+from bot.api_provider.requests import get_imei_info
+
 
 class IMEICheck(StatesGroup):
     number = State()
 
 
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'database')
+
 
 start_router = Router()
 
@@ -30,8 +33,6 @@ async def start_handler(message: Message, state: FSMContext):
     await state.set_state(IMEICheck.number)
     await message.answer('Введите IMEI-номер')
 
-    await state.clear()
-
 
 @start_router.message(IMEICheck.number)
 async def number_handler(message: Message, state: FSMContext):
@@ -42,4 +43,7 @@ async def number_handler(message: Message, state: FSMContext):
         return
 
     await message.answer('Проверяем IMEI-номер...')
+    response = await get_imei_info(imei_number)
+
+    await message.answer(response["message"])
     await state.clear()
