@@ -1,1 +1,2 @@
-imei-check/.venv
+.venv
+__pycache__
