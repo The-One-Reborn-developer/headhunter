@@ -9,4 +9,4 @@ aiogram, python-dotenv, Flask, aiohttp, wsgi
 
 ### Fullstack
 
-[СТАТЕРА]()
+[СТАТЕРА](https://github.com/The-One-Reborn-developer/headhunter/tree/master/cars-weighing)
