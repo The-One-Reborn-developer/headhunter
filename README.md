@@ -10,3 +10,4 @@ aiogram, python-dotenv, Flask, aiohttp, wsgi
 ### Fullstack
 
 [СТАТЕРА](https://github.com/The-One-Reborn-developer/headhunter/tree/master/cars-weighing)
+python-dotenv, Flask, SQLAlchemy, pytest

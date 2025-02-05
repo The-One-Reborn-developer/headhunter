@@ -2,12 +2,14 @@
 
 ## Features
 
-in progress
+- in progress
 
 ## Dependencies
 
 [python-dotenv](https://github.com/theskumar/python-dotenv)
-[]
+[Flask](https://github.com/pallets/flask)
+[SQLAlchemy](https://github.com/sqlalchemy/sqlalchemy)
+[pytest](https://github.com/pytest-dev/pytest)
 
 ## Setup
 

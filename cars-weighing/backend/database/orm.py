@@ -84,7 +84,7 @@ class Car(DatabaseManager):
     def to_dict(self) -> dict:
         return {
             'id': self.id,
-            'number_in_train': self.number_in_train,
+            'traid_id': self.train_id,
             'weight': self.weight,
             'train_id': self.train_id,
             'carts': self.carts
