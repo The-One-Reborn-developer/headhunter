@@ -6,7 +6,8 @@ in progress
 
 ## Dependencies
 
-in progress
+[python-dotenv](https://github.com/theskumar/python-dotenv)
+[]
 
 ## Setup
 
