@@ -149,5 +149,25 @@ def handle_payment():
         if not signature_verification:
             current_app.logger(
                 f'Received invalid transaction with wrong signature: {payload}')
+
+        user = User.get_entry(user_id)
+        if not user:
+            current_app.logger(
+                f'Received payment from webhook for non-existant user: {payload}')
+
+        accounts = Account.get_entries(user_id=user.id)
+        if not accounts:
+            Account.insert_entry(transaction_id, account_id,
+                                 user_id, amount, signature)
+        else:
+            for account_data in [account.to_dict() for account in accounts]:
+                if account_data['user_id'] == user_id:
+                    Account.update_entry(
+                        filters={"user_id": user_id},
+                        updates={"balance": account_data['balance'] + amount}
+                    )
+
+        Payment.insert_entry(transaction_id, account_id,
+                             user_id, amount, signature)
     except Exception as e:
         current_app.logger(f'Error while processing payment from webhook: {e}')

@@ -5,7 +5,7 @@ from typing import List
 
 from dotenv import load_dotenv, find_dotenv
 
-from sqlalchemy import Boolean, Float, String, create_engine, ForeignKey
+from sqlalchemy import Boolean, Float, String, create_engine, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, sessionmaker, DeclarativeBase, relationship
 from sqlalchemy.ext.asyncio import AsyncAttrs
 
@@ -67,6 +67,26 @@ class DatabaseManager(DeclarativeBase, AsyncAttrs):
             logging.error(f"Error in get_entries: {e}")
             return False
 
+    @classmethod
+    def update_entry(cls, filters: dict, updates: dict) -> bool:
+        try:
+            with cls.sync_session() as session:
+                query = session.query(cls)
+
+                for key, value in filters.items():
+                    query = query.filter(getattr(cls, key) == value)
+
+                result = query.update(updates, synchronize_session=False)
+
+                if result:
+                    session.commit()
+                    return True
+                else:
+                    return False
+        except Exception as e:
+            logging.error(f"Error in get_entries: {e}")
+            return False
+
 
 class User(DatabaseManager):
     __tablename__ = 'users'
@@ -108,7 +128,8 @@ class Payment(DatabaseManager):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     transaction_id: Mapped[str] = mapped_column(String, nullable=False)
-    account_id: Mapped[int] = mapped_column(ForeignKey('accounts.id'))
+    account_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey('accounts.id'))
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     signature: Mapped[str] = mapped_column(String, nullable=False)
 
