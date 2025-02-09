@@ -60,7 +60,7 @@ class DatabaseManager(DeclarativeBase, AsyncAttrs):
             with cls.sync_session() as session:
                 query = session.query(cls)
                 if kwargs:
-                    query = query.filter_by(**kwargs)
+                    query = query.filter_by(**kwargs).limit(20)
                 instances = query.all()
                 return instances if instances else False
         except Exception as e:
@@ -82,7 +82,7 @@ class User(DatabaseManager):
         return {
             'id': self.id,
             'is_admin': self.is_admin,
-            'accounts': self.accounts
+            'accounts': self.accounts,
         }
 
 
@@ -99,7 +99,7 @@ class Account(DatabaseManager):
             'id': self.id,
             'balance': self.balance,
             'user_id': self.user_id,
-            'payments': self.payments
+            'payments': self.payments,
         }
 
 
@@ -107,14 +107,16 @@ class Payment(DatabaseManager):
     __tablename__ = 'payments'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    uuid: Mapped[str] = mapped_column(String, nullable=False)
-    amount: Mapped[float] = mapped_column(Float, nullable=False)
+    transaction_id: Mapped[str] = mapped_column(String, nullable=False)
     account_id: Mapped[int] = mapped_column(ForeignKey('accounts.id'))
+    amount: Mapped[float] = mapped_column(Float, nullable=False)
+    signature: Mapped[str] = mapped_column(String, nullable=False)
 
     def to_dict(self) -> dict:
         return {
             'id': self.id,
-            'uuid': self.uuid,
+            'transaction_id': self.uuid,
+            'account_id': self.account_id,
             'amount': self.amount,
-            'account_id': self.account_id
+            'signature': self.signature,
         }
